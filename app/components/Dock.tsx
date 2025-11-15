@@ -136,25 +136,34 @@ export default function Dock({
     return () => window.removeEventListener('resize', update);
   }, [collapsedWidth, items.length]);
 
-  // Hide dock when footer is in view
+  // Hide dock when Leadership section is in view
   useEffect(() => {
-    const footer = document.querySelector('footer');
-    if (!footer) return;
+    const leadershipSection = document.getElementById('leadership-section');
+    
+    if (!leadershipSection) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Hide dock when footer is visible in viewport
-          setIsVisible(!entry.isIntersecting);
+          // Hide dock after Leadership section has passed (when it's no longer intersecting and above viewport)
+          if (entry.isIntersecting) {
+            // Section is in view, keep dock visible
+            setIsVisible(true);
+          } else {
+            // Section is not in view - check if we've scrolled past it
+            const rect = entry.boundingClientRect;
+            // If bottom of section is above viewport, we've scrolled past it - hide dock
+            setIsVisible(rect.bottom >= 0);
+          }
         });
       },
       {
-        threshold: 0.1, // Trigger when 10% of footer is visible
-        rootMargin: '0px 0px -100px 0px' // Start hiding slightly before footer enters view
+        threshold: 0, // Trigger when any part of section enters/leaves viewport
+        rootMargin: '0px'
       }
     );
 
-    observer.observe(footer);
+    observer.observe(leadershipSection);
     return () => observer.disconnect();
   }, []);
 
@@ -162,7 +171,7 @@ export default function Dock({
   const panelWidth = useSpring(widthRow, spring);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isVisible && (
         <motion.div 
           initial={{ opacity: 1, y: 0 }}
@@ -171,7 +180,9 @@ export default function Dock({
           transition={{ duration: 0.3 }}
           style={{ 
             height, 
-            scrollbarWidth: 'none' as any
+            scrollbarWidth: 'none' as any,
+            overflow: 'hidden',
+            pointerEvents: 'none' as any
           }} 
           className="dock-outer"
         >

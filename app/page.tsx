@@ -284,7 +284,7 @@ export default function Home() {
         </div>
 
         {/* Positions of Responsibility */}
-        <div className="mb-40">
+        <div id="leadership-section" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">LEADERSHIP</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
