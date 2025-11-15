@@ -181,7 +181,7 @@ export default function Dock({
           style={{ 
             height, 
             scrollbarWidth: 'none' as any,
-            overflow: 'hidden',
+            overflow: 'visible',
             pointerEvents: 'none' as any
           }} 
           className="dock-outer"
