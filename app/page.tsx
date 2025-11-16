@@ -1,6 +1,7 @@
 'use client';
 
 import Dock from './components/Dock';
+import InfiniteMenu from './components/InfiniteMenu';
 import { FaHome, FaUser, FaBriefcase, FaEnvelope, FaCode, FaGraduationCap } from 'react-icons/fa';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
@@ -220,6 +221,46 @@ export default function Home() {
                   <span>Maintained strong brand relationships, achieving high client retention rates through consistent communication, reliability, and results-driven collaboration.</span>
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Projects/Portfolio Section */}
+        <div id="projects" className="mb-40">
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-black mb-4 text-black">PROJECTS</h2>
+            <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
+          </div>
+          <div className="border-4 border-black bg-white p-8 relative hover:shadow-[12px_12px_0_0_#000] transition-shadow">
+            <div style={{ height: '600px', position: 'relative' }}>
+              <InfiniteMenu
+                items={[
+                  {
+                    image: 'https://picsum.photos/300/300?grayscale',
+                    link: 'https://google.com/',
+                    title: 'Project 1',
+                    description: 'This is pretty cool, right?'
+                  },
+                  {
+                    image: 'https://picsum.photos/400/400?grayscale',
+                    link: 'https://google.com/',
+                    title: 'Project 2',
+                    description: 'This is pretty cool, right?'
+                  },
+                  {
+                    image: 'https://picsum.photos/500/500?grayscale',
+                    link: 'https://google.com/',
+                    title: 'Project 3',
+                    description: 'This is pretty cool, right?'
+                  },
+                  {
+                    image: 'https://picsum.photos/600/600?grayscale',
+                    link: 'https://google.com/',
+                    title: 'Project 4',
+                    description: 'This is pretty cool, right?'
+                  }
+                ] as Array<{ image: string; link: string; title: string; description: string }>}
+              />
             </div>
           </div>
         </div>
