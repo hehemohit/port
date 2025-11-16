@@ -1,11 +1,82 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Dock from './components/Dock';
 import InfiniteMenu from './components/InfiniteMenu';
-import { FaHome, FaUser, FaBriefcase, FaEnvelope, FaCode, FaGraduationCap } from 'react-icons/fa';
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import LoadingScreen from './components/LoadingScreen';
+import { 
+  FaHome, FaUser, FaBriefcase, FaEnvelope, FaCode, FaGraduationCap, 
+  FaMapMarkerAlt, FaUsers, FaProjectDiagram, FaBrain, FaHandshake, 
+  FaMicrophone, FaTrophy, FaDatabase, FaPython, FaChartBar, FaFileExcel, 
+  FaWordpress, FaPalette, FaVideo, FaImage, FaFilm 
+} from 'react-icons/fa';
+
+// Animation variants - start at final position to prevent layout shifts
+const fadeInUp = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1
+  }
+};
+
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  }
+};
+
+// Reusable animated section component
+function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
+      variants={fadeInUp}
+      transition={{ delay, duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }}
+      className={className}
+      style={{ overflow: 'visible', willChange: 'transform, opacity' }}
+      layout
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Fix container height after animations complete to prevent scrollbar
+  useEffect(() => {
+    if (!isLoading && containerRef.current) {
+      const timer = setTimeout(() => {
+        const container = containerRef.current;
+        if (container) {
+          // Ensure container height matches its content
+          container.style.height = 'auto';
+          container.style.maxHeight = 'none';
+        }
+      }, 2000); // Wait for all animations to complete
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
   const dockItems = [
     {
       icon: <FaHome />,
@@ -55,75 +126,123 @@ export default function Home() {
   ];
 
   return (
-    <div className="bg-[#f5f5f0] relative overflow-x-hidden" style={{ marginBottom: 0, paddingBottom: 0, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Decorative Background Elements */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-[#ffda03] rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute top-60 right-20 w-40 h-40 bg-purple-400 rounded-full opacity-15 blur-3xl"></div>
-        <div className="absolute bottom-40 left-1/4 w-36 h-36 bg-pink-400 rounded-full opacity-15 blur-3xl"></div>
-      </div>
+    <>
+      {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
+      {!isLoading && (
+        <div ref={containerRef} className="bg-[#f5f5f0] relative" style={{ marginBottom: 0, paddingBottom: 0 }}>
+          {/* Decorative Background Elements */}
+          <motion.div 
+            className="fixed inset-0 pointer-events-none z-0"
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            transition={{ duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }}
+          >
+            <div className="absolute top-20 left-10 w-32 h-32 bg-[#ffda03] rounded-full opacity-20 blur-3xl"></div>
+            <div className="absolute top-60 right-20 w-40 h-40 bg-purple-400 rounded-full opacity-15 blur-3xl"></div>
+            <div className="absolute bottom-40 left-1/4 w-36 h-36 bg-pink-400 rounded-full opacity-15 blur-3xl"></div>
+          </motion.div>
 
-      {/* Hero Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 py-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-40">
-          <div>
-            <div className="text-sm text-gray-600 uppercase tracking-wider mb-4">Web Developer & Digital Strategist</div>
-            <h1 className="text-6xl md:text-7xl font-black leading-tight mb-6 text-black">
-              MOHIT JANGID
-            </h1>
-            <p className="text-xl mb-8 text-gray-700 leading-relaxed">
-              Web Developer Intern at DigitalVigyapan | Building innovative digital solutions and driving brand growth through creative strategies and technical expertise.
-            </p>
-            <div className="flex flex-col gap-3 mb-6">
-              <div className="flex items-center gap-3 text-gray-700">
-                <FaMapMarkerAlt className="text-[#ffda03]" />
-                <span>Virar, India</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-700">
-                <FaEnvelope className="text-[#ffda03]" />
-                <a href="mailto:mohit.jangid2805@gmail.com" className="hover:underline">mohit.jangid2805@gmail.com</a>
-              </div>
-            </div>
-            <div className="grid md:grid-cols-2 gap-4 mt-8">
-              <a href="#contact" className="border-4 border-black bg-black text-white p-6 font-bold text-lg hover:bg-gray-800 hover:shadow-[8px_8px_0_0_#000] transition-all text-center">
-                GET IN TOUCH
-              </a>
-              <a href="#experience" className="border-4 border-black bg-white text-black p-6 font-bold text-lg hover:bg-gray-100 hover:shadow-[8px_8px_0_0_#000] transition-all text-center">
-                VIEW MY WORK
-              </a>
-            </div>
-          </div>
-          <div className="relative">
-            <div className="border-4 border-black bg-white p-8 relative">
-              <div className="grid grid-cols-3 gap-4">
-                {[...Array(9)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square border-4 border-black flex items-center justify-center text-3xl"
-                    style={{
-                      backgroundColor: [
-                        '#ffda03', '#10b981', '#ef4444', 
-                        '#ffffff', '#3b82f6', '#f59e0b',
-                        '#8b5cf6', '#ec4899', '#06b6d4'
-                      ][i]
-                    }}
-                  >
-                    :)
+          {/* Hero Section */}
+          <section className="relative z-10 max-w-7xl mx-auto px-6 py-20" style={{ overflow: 'visible' }}>
+            <motion.div 
+              className="grid md:grid-cols-2 gap-12 items-center mb-40"
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              transition={{ duration: 0.6, ease: [0.6, -0.05, 0.01, 0.99] }}
+              style={{ overflow: 'visible' }}
+            >
+              <motion.div variants={fadeInUp}>
+                <motion.div 
+                  className="text-sm text-gray-600 uppercase tracking-wider mb-4"
+                  variants={fadeInUp}
+                >
+                  Web Developer & Digital Strategist
+                </motion.div>
+                <motion.h1 
+                  className="text-6xl md:text-7xl font-black leading-tight mb-6 text-black"
+                  variants={fadeInUp}
+                >
+                  MOHIT JANGID
+                </motion.h1>
+                <motion.p 
+                  className="text-xl mb-8 text-gray-700 leading-relaxed"
+                  variants={fadeInUp}
+                >
+                  Web Developer Intern at DigitalVigyapan | Building innovative digital solutions and driving brand growth through creative strategies and technical expertise.
+                </motion.p>
+                <motion.div 
+                  className="flex flex-col gap-3 mb-6"
+                  variants={fadeInUp}
+                >
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="dock-icon-small">
+                      <FaMapMarkerAlt />
+                    </div>
+                    <span>Virar, India</span>
                   </div>
-                ))}
-              </div>
-            </div>
-            {/* Decorative Star */}
-            <div className="absolute -top-6 -right-6 w-20 h-20 border-4 border-black bg-pink-400 transform rotate-12">
-              <div className="w-full h-full flex items-center justify-center text-3xl">★</div>
-            </div>
-          </div>
-        </div>
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="dock-icon-small">
+                      <FaEnvelope />
+                    </div>
+                    <a href="mailto:mohit.jangid2805@gmail.com" className="hover:underline">mohit.jangid2805@gmail.com</a>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  className="grid md:grid-cols-2 gap-4 mt-8"
+                  variants={fadeInUp}
+                >
+                  <a href="#contact" className="border-4 border-black bg-black text-white p-6 font-bold text-lg hover:bg-gray-800 hover:shadow-[8px_8px_0_0_#000] transition-all text-center">
+                    GET IN TOUCH
+                  </a>
+                  <a href="#experience" className="border-4 border-black bg-white text-black p-6 font-bold text-lg hover:bg-gray-100 hover:shadow-[8px_8px_0_0_#000] transition-all text-center">
+                    VIEW MY WORK
+                  </a>
+                </motion.div>
+              </motion.div>
+              <motion.div 
+                className="relative"
+                variants={fadeInUp}
+              >
+                <div className="border-4 border-black bg-white p-8 relative">
+                  <div className="grid grid-cols-3 gap-4">
+                    {[...Array(9)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="aspect-square border-4 border-black flex items-center justify-center text-3xl"
+                        style={{
+                          backgroundColor: [
+                            '#ffda03', '#10b981', '#ef4444', 
+                            '#ffffff', '#3b82f6', '#f59e0b',
+                            '#8b5cf6', '#ec4899', '#06b6d4'
+                          ][i]
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 + i * 0.05, duration: 0.4 }}
+                      >
+                        :)
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+                {/* Decorative Star */}
+                <motion.div 
+                  className="absolute -top-6 -right-6 w-20 h-20 border-4 border-black bg-pink-400 transform rotate-12"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                >
+                  <div className="w-full h-full flex items-center justify-center text-3xl">★</div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
       </section>
 
-      {/* About Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 py-20">
-        <div id="about" className="mb-40">
+          {/* About Section */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div id="about" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">ABOUT ME</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
@@ -145,11 +264,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+          </AnimatedSection>
 
-      {/* Experience Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-6 py-20">
-        <div id="experience" className="mb-40">
+          {/* Experience Section */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div id="experience" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">EXPERIENCE</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
@@ -224,9 +343,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+          </AnimatedSection>
 
-        {/* Projects/Portfolio Section */}
-        <div id="projects" className="mb-40">
+          {/* Projects/Portfolio Section */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div id="projects" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">PROJECTS</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
@@ -264,9 +385,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+          </AnimatedSection>
 
-        {/* Education Section */}
-        <div id="education" className="mb-40">
+          {/* Education Section */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div id="education" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">EDUCATION</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
@@ -285,9 +408,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+          </AnimatedSection>
 
-        {/* Skills Section */}
-        <div id="skills" className="mb-40">
+          {/* Skills Section */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div id="skills" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">SKILLS</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
@@ -297,10 +422,24 @@ export default function Home() {
           <div className="border-4 border-black bg-green-400 p-8 mb-8">
             <h3 className="text-2xl font-black mb-4 text-black">Technical Skills</h3>
             <div className="flex flex-wrap gap-4 items-center">
-              {['SQL', 'Python', 'Tableau', 'Cognos Analytics', 'Power BI', 'Excel', 'WordPress', 'Canva', 'Davinci Video Editing', 'Adobe Photoshop', 'Adobe Premiere Pro'].map((skill, i) => (
+              {[
+                { name: 'SQL', icon: <FaDatabase /> },
+                { name: 'Python', icon: <FaPython /> },
+                { name: 'Tableau', icon: <FaChartBar /> },
+                { name: 'Cognos Analytics', icon: <FaChartBar /> },
+                { name: 'Power BI', icon: <FaChartBar /> },
+                { name: 'Excel', icon: <FaFileExcel /> },
+                { name: 'WordPress', icon: <FaWordpress /> },
+                { name: 'Canva', icon: <FaPalette /> },
+                { name: 'Davinci Video Editing', icon: <FaVideo /> },
+                { name: 'Adobe Photoshop', icon: <FaImage /> },
+                { name: 'Adobe Premiere Pro', icon: <FaFilm /> }
+              ].map((skill, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <span className="text-2xl">:)</span>
-                  <span className="text-lg font-bold text-black">{skill}</span>
+                  <div className="dock-icon-small">
+                    {skill.icon}
+                  </div>
+                  <span className="text-lg font-bold text-black">{skill.name}</span>
                 </div>
               ))}
             </div>
@@ -309,23 +448,27 @@ export default function Home() {
           {/* Soft Skills */}
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { title: 'Stakeholder Management', icon: '👥' },
-              { title: 'Project Management', icon: '📊' },
-              { title: 'Critical & Analytical Thinking', icon: '🧠' },
-              { title: 'Cross-functional Collaboration', icon: '🤝' },
-              { title: 'Public Speaking', icon: '🎤' },
-              { title: 'Teamwork & Event Management', icon: '🎯' }
+              { title: 'Stakeholder Management', icon: <FaUsers /> },
+              { title: 'Project Management', icon: <FaProjectDiagram /> },
+              { title: 'Critical & Analytical Thinking', icon: <FaBrain /> },
+              { title: 'Cross-functional Collaboration', icon: <FaHandshake /> },
+              { title: 'Public Speaking', icon: <FaMicrophone /> },
+              { title: 'Teamwork & Event Management', icon: <FaTrophy /> }
             ].map((skill, i) => (
               <div key={i} className="border-4 border-black bg-white p-6 relative hover:shadow-[8px_8px_0_0_#000] transition-shadow">
-                <div className="text-4xl mb-3">{skill.icon}</div>
+                <div className="dock-icon-medium mb-3">
+                  {skill.icon}
+                </div>
                 <h3 className="text-xl font-black mb-2 text-black">{skill.title}</h3>
               </div>
-            ))}
+              ))}
           </div>
         </div>
+          </AnimatedSection>
 
-        {/* Positions of Responsibility */}
-        <div id="leadership-section" className="mb-40">
+          {/* Positions of Responsibility */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div id="leadership-section" className="mb-40">
           <div className="text-center mb-12">
             <h2 className="text-5xl font-black mb-4 text-black">LEADERSHIP</h2>
             <div className="w-24 h-1 bg-[#ffda03] mx-auto"></div>
@@ -348,11 +491,11 @@ export default function Home() {
             </ul>
           </div>
         </div>
+          </AnimatedSection>
 
-      </section>
-
-      {/* Footer - Contact Section - Last Element */}
-      <footer id="contact" className="relative z-10 border-4 border-black bg-black text-white p-12 text-center mt-20" style={{ marginBottom: 0, backgroundColor: 'black', marginTop: 'auto' }}>
+          {/* Footer - Contact Section - Last Element */}
+          <AnimatedSection>
+            <footer id="contact" className="relative z-10 border-4 border-black bg-black text-white p-12 text-center mt-20" style={{ marginBottom: 0, backgroundColor: 'black', marginTop: 'auto' }}>
         <h2 className="text-5xl font-black mb-6">LET&apos;S CONNECT</h2>
         <p className="text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
           Ready to collaborate on your next project? Get in touch and let&apos;s create something amazing together.
@@ -371,12 +514,33 @@ export default function Home() {
           <p>MOHIT JANGID © 2025</p>
         </div>
         {/* Decorative Elements */}
-        <div className="absolute top-4 left-4 w-12 h-12 border-4 border-white bg-pink-400 transform rotate-45"></div>
-        <div className="absolute bottom-4 right-4 w-12 h-12 border-4 border-white bg-teal-400 transform -rotate-12"></div>
-      </footer>
+              <motion.div 
+                className="absolute top-4 left-4 w-12 h-12 border-4 border-white bg-pink-400 transform rotate-45"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              ></motion.div>
+              <motion.div 
+                className="absolute bottom-4 right-4 w-12 h-12 border-4 border-white bg-teal-400 transform -rotate-12"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+              ></motion.div>
+            </footer>
+          </AnimatedSection>
 
-      {/* Dock Component - Fixed Position - Always Visible */}
-      <Dock items={dockItems} />
-    </div>
+          {/* Dock Component - Fixed Position - Always Visible */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.6 }}
+          >
+            <Dock items={dockItems} />
+          </motion.div>
+        </div>
+      )}
+    </>
   );
 }
