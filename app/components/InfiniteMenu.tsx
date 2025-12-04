@@ -564,8 +564,8 @@ class InfiniteGridMenu {
   constructor(canvas: HTMLCanvasElement, items: InfiniteMenuItem[], onActiveItemChange?: (index: number) => void, onMovementChange?: (isMoving: boolean) => void, onInit: ((sketch: InfiniteGridMenu) => void) | null = null) {
     this.canvas = canvas;
     this.items = items || [];
-    this.onActiveItemChange = onActiveItemChange || (() => {});
-    this.onMovementChange = onMovementChange || (() => {});
+    this.onActiveItemChange = onActiveItemChange || (() => { });
+    this.onMovementChange = onMovementChange || (() => { });
     this.#init(onInit);
   }
 
@@ -590,7 +590,7 @@ class InfiniteGridMenu {
   }
 
   #init(onInit: ((sketch: InfiniteGridMenu) => void) | null) {
-    const glContext = this.canvas.getContext('webgl2', { antialias: true, alpha: false });
+    const glContext = this.canvas.getContext('webgl2', { antialias: true, alpha: true });
     if (!glContext) {
       throw new Error('No WebGL 2 context!');
     }
@@ -917,16 +917,27 @@ export default function InfiniteMenu({ items = [] }: { items?: InfiniteMenuItem[
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      <canvas id="infinite-grid-menu-canvas" ref={canvasRef} />
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
+      <canvas 
+        id="infinite-grid-menu-canvas" 
+        ref={canvasRef}
+        style={{ 
+          display: 'block', 
+          width: '100%', 
+          height: '100%',
+          position: 'absolute',
+          top: 0,
+          left: 0
+        }}
+      />
       {activeItem && (
-        <>
+        <div style={{ position: 'relative', width: '100%', height: '100%', zIndex: 10, pointerEvents: 'none' }}>
           <h2 className={`face-title ${isMoving ? 'inactive' : 'active'}`}>{activeItem.title}</h2>
           <p className={`face-description ${isMoving ? 'inactive' : 'active'}`}> {activeItem.description}</p>
-          <div onClick={handleButtonClick} className={`action-button ${isMoving ? 'inactive' : 'active'}`}>
+          <div onClick={handleButtonClick} className={`action-button ${isMoving ? 'inactive' : 'active'}`} style={{ pointerEvents: 'auto' }}>
             <p className="action-button-icon">&#x2197;</p>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
