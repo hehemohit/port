@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import Dock from './components/Dock';
 import InfiniteMenu from './components/InfiniteMenu';
 import LoadingScreen from './components/LoadingScreen';
+import Terminal from './components/Terminal';
 
 import {
   FaHome, FaUser, FaBriefcase, FaEnvelope, FaCode, FaGraduationCap,
@@ -239,6 +240,23 @@ export default function Home() {
               </motion.div>
             </motion.div>
           </section>
+
+          {/* Terminal Section */}
+          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
+            <div className="mb-40">
+              <div className="text-center mb-12">
+                <h2 className="text-5xl font-black mb-4 text-black">TERMINAL</h2>
+                <div className="w-24 h-1 bg-primary mx-auto"></div>
+              </div>
+              <div className="flex justify-center">
+                <Terminal
+                  username="jumpcloud"
+                  hostname="JumpCloud"
+                  shell="zsh"
+                />
+              </div>
+            </div>
+          </AnimatedSection>
 
           {/* About Section */}
           <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
