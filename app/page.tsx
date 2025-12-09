@@ -5,7 +5,6 @@ import { motion, useInView } from 'framer-motion';
 import Dock from './components/Dock';
 import InfiniteMenu from './components/InfiniteMenu';
 import LoadingScreen from './components/LoadingScreen';
-import Navbar from './components/Navbar';
 
 import {
   FaHome, FaUser, FaBriefcase, FaEnvelope, FaCode, FaGraduationCap,
@@ -132,7 +131,6 @@ export default function Home() {
       {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
       {!isLoading && (
         <>
-          <Navbar />
           <div
             ref={containerRef}
             className="relative z-10 bg-transparent"
