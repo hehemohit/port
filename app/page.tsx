@@ -601,57 +601,63 @@ export default function Home() {
           </AnimatedSection>
 
           {/* Floating, collapsible console in bottom-right */}
-          {hasStarted && showFloatingConsole && (
-            <div
-              ref={floatingConsoleRef}
-              className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
-            >
-              <AnimatePresence initial={false}>
-                {isFloatingOpen && (
-                  <motion.div
-                    key="floating-console"
-                    initial={{ opacity: 0, scale: 0.2, y: 40, height: 0 }}
-                    animate={{ opacity: 1, scale: 1, y: 0, height: 'auto' }}
-                    exit={{ opacity: 0, scale: 0.2, y: 40, height: 0 }}
-                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                    className="w-[340px] max-w-[85vw] shadow-[0_18px_45px_rgba(0,0,0,0.6)] rounded-xl overflow-hidden border border-black/70 bg-transparent backdrop-blur-md origin-bottom-right"
-                  >
-                    <Terminal
-                      username="jumpcloud"
-                      hostname="Console"
-                      shell="zsh"
-                      initialCommands={[
-                        {
-                          input: '',
-                          output:
-                            'Quick console ready. Use navigation commands or type "theme dark" / "theme light" to change the theme.',
-                          timestamp: new Date(),
-                        },
-                      ]}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <button
-                type="button"
-                onClick={() => setIsFloatingOpen((open) => !open)}
-                aria-label={isFloatingOpen ? 'Hide console' : 'Open console'}
-                className="flex items-center justify-center w-12 h-12 rounded-2xl bg-black/90 text-white shadow-[0_10px_30px_rgba(0,0,0,0.7)] border border-white/25 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.8)] transition-all origin-bottom-right"
+          <AnimatePresence>
+            {hasStarted && showFloatingConsole && (
+              <motion.div
+                ref={floatingConsoleRef}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 24 }}
+                transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
               >
-                <motion.span
-                  animate={
-                    isFloatingOpen
-                      ? { scale: 0.85, opacity: 0.5 }
-                      : { scale: 1, opacity: 1 }
-                  }
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                  className="inline-flex w-9 h-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-black border border-white/20 text-[14px] font-mono"
+                <AnimatePresence initial={false}>
+                  {isFloatingOpen && (
+                    <motion.div
+                      key="floating-console"
+                      initial={{ opacity: 0, scale: 0.2, y: 40, height: 0 }}
+                      animate={{ opacity: 1, scale: 1, y: 0, height: 'auto' }}
+                      exit={{ opacity: 0, scale: 0.2, y: 40, height: 0 }}
+                      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                      className="w-[340px] max-w-[85vw] shadow-[0_18px_45px_rgba(0,0,0,0.6)] rounded-xl overflow-hidden border border-black/70 bg-transparent backdrop-blur-md origin-bottom-right"
+                    >
+                      <Terminal
+                        username="jumpcloud"
+                        hostname="Console"
+                        shell="zsh"
+                        initialCommands={[
+                          {
+                            input: '',
+                            output:
+                              'Quick console ready. Use navigation commands or type "theme dark" / "theme light" to change the theme.',
+                            timestamp: new Date(),
+                          },
+                        ]}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <button
+                  type="button"
+                  onClick={() => setIsFloatingOpen((open) => !open)}
+                  aria-label={isFloatingOpen ? 'Hide console' : 'Open console'}
+                  className="flex items-center justify-center w-12 h-12 rounded-2xl bg-black/90 text-white shadow-[0_10px_30px_rgba(0,0,0,0.7)] border border-white/25 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.8)] transition-all origin-bottom-right"
                 >
-                  {isFloatingOpen ? '▁' : '›_'}
-                </motion.span>
-              </button>
-            </div>
-          )}
+                  <motion.span
+                    animate={
+                      isFloatingOpen
+                        ? { scale: 0.85, opacity: 0.5 }
+                        : { scale: 1, opacity: 1 }
+                    }
+                    transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                    className="inline-flex w-9 h-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-black border border-white/20 text-[14px] font-mono"
+                  >
+                    {isFloatingOpen ? '▁' : '›_'}
+                  </motion.span>
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Dock Component - Fixed Position - Always Visible */}
           <motion.div
