@@ -204,3 +204,64 @@ footer~*:not(.dock-outer) {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* === Theming: explicit light/dark modes controlled via <html data-theme="..."> === */
+
+:root[data-theme='light'] {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+:root[data-theme='dark'] {
+  --background: #050816;
+  --foreground: #f9fafb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --background: #050816;
+    --foreground: #f9fafb;
+  }
+}
+
+html {
+  background: var(--background) !important;
+}
+
+body {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* Dark mode overrides for common utility-style classes so existing markup keeps working */
+html[data-theme='dark'] .bg-white {
+  background-color: #020617 !important; /* dark card bg for "white" sections */
+}
+
+html[data-theme='dark'] .bg-black {
+  background-color: #000000 !important;
+}
+
+html[data-theme='dark'] .text-black {
+  color: #f9fafb !important;
+}
+
+html[data-theme='dark'] .text-gray-700 {
+  color: #e5e7eb !important;
+}
+
+html[data-theme='dark'] .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+html[data-theme='dark'] .text-gray-300 {
+  color: #e5e7eb !important;
+}
+
+html[data-theme='dark'] .bg-secondary-purple {
+  background-color: #4c1d95 !important;
+}
+
+html[data-theme='dark'] .bg-secondary-green {
+  background-color: #064e3b !important;
+}

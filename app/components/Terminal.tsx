@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import './Terminal.css';
+import { useTheme } from './ThemeProvider';
 
 interface Command {
   input: string;
@@ -12,6 +13,8 @@ interface Command {
 interface TerminalProps {
   initialCommands?: Command[];
   onCommand?: (command: string) => string | Promise<string>;
+  onNavigate?: (section: string) => void;
+  onStart?: () => void;
   username?: string;
   hostname?: string;
   shell?: string;
@@ -20,6 +23,8 @@ interface TerminalProps {
 export default function Terminal({
   initialCommands = [],
   onCommand,
+  onNavigate,
+  onStart,
   username = 'jumpcloud',
   hostname = 'JumpCloud',
   shell = 'zsh'
@@ -31,6 +36,7 @@ export default function Terminal({
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  const { theme, setTheme, toggleTheme } = useTheme();
   const [lastLogin] = useState(() => {
     const now = new Date();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -84,7 +90,7 @@ export default function Terminal({
       output = handleDefaultCommand(command);
     }
 
-    // Add command to history
+    // Add command + any output to history
     setCommands(prev => [...prev, {
       input: command,
       output,
@@ -94,18 +100,100 @@ export default function Terminal({
 
   // Default command handlers (extensible)
   const handleDefaultCommand = (command: string): string => {
-    const cmd = command.trim().toLowerCase();
+    const raw = command.trim();
+    const cmd = raw.toLowerCase();
+
+    // Theme controls
+    if (cmd === 'theme' || cmd === 'theme status') {
+      return `Current theme: ${theme}`;
+    }
+
+    if (cmd === 'theme dark' || cmd === 'dark') {
+      setTheme('dark');
+      return 'Switched to dark mode.';
+    }
+
+    if (cmd === 'theme light' || cmd === 'light') {
+      setTheme('light');
+      return 'Switched to light mode.';
+    }
+
+    if (cmd === 'theme toggle' || cmd === 'toggle theme') {
+      const next = theme === 'light' ? 'dark' : 'light';
+      toggleTheme();
+      return `Toggled theme to ${next}.`;
+    }
+    
+    // Special start command to reveal the page
+    if (cmd === 'start') {
+      if (onStart) {
+        onStart();
+        return 'Starting portfolio...';
+      }
+      return 'Start command not available.';
+    }
+
+    // Navigation commands
+    const navigationCommands: { [key: string]: string } = {
+      'home': 'home',
+      'about': 'about',
+      'experience': 'experience',
+      'projects': 'projects',
+      'education': 'education',
+      'skills': 'skills',
+      'leadership': 'leadership-section',
+      'contact': 'contact',
+      'cd home': 'home',
+      'cd about': 'about',
+      'cd experience': 'experience',
+      'cd projects': 'projects',
+      'cd education': 'education',
+      'cd skills': 'skills',
+      'cd leadership': 'leadership-section',
+      'cd contact': 'contact',
+    };
+
+    if (navigationCommands[cmd]) {
+      if (onNavigate) {
+        onNavigate(navigationCommands[cmd]);
+        return `Navigating to ${navigationCommands[cmd]}...`;
+      }
+      return `Navigation not available.`;
+    }
     
     switch (cmd) {
       case 'help':
         return `Available commands:
-  help     - Show this help message
-  clear    - Clear the terminal
-  whoami   - Display current user
-  date     - Show current date and time
-  echo     - Echo back the input
-  ls       - List files (placeholder)
-  pwd      - Print working directory`;
+  help              - Show this help message
+  clear             - Clear the terminal
+  whoami            - Display current user
+  date              - Show current date and time
+  echo <text>       - Echo back the input
+  ls                - List available sections
+  pwd               - Print working directory
+  start             - Reveal the portfolio page
+  theme             - Show current theme (light/dark)
+  theme dark        - Switch to dark mode
+  theme light       - Switch to light mode
+  theme toggle      - Toggle between light and dark
+  
+Navigation commands:
+  home              - Navigate to home section
+  about             - Navigate to about section
+  experience        - Navigate to experience section
+  projects          - Navigate to projects section
+  education         - Navigate to education section
+  skills            - Navigate to skills section
+  leadership        - Navigate to leadership section
+  contact           - Navigate to contact section
+  cd <section>      - Navigate to a section (alternative syntax)
+  
+Examples:
+  about             - Go to About section
+  cd projects       - Go to Projects section
+  theme dark        - Enable dark mode
+  theme toggle      - Toggle current theme
+  echo Hello        - Echo "Hello"`;
       
       case 'whoami':
         return username;
@@ -117,11 +205,34 @@ export default function Terminal({
         return '~';
       
       case 'ls':
-        return 'Documents  Downloads  Projects  Desktop';
+        return 'home  about  experience  projects  education  skills  leadership  contact';
       
       default:
         if (cmd.startsWith('echo ')) {
           return command.substring(5);
+        }
+        if (cmd.startsWith('cd ')) {
+          const section = cmd.substring(3).trim();
+          if (onNavigate) {
+            // Try to find the section
+            const sectionMap: { [key: string]: string } = {
+              'home': 'home',
+              'about': 'about',
+              'experience': 'experience',
+              'projects': 'projects',
+              'education': 'education',
+              'skills': 'skills',
+              'leadership': 'leadership-section',
+              'contact': 'contact',
+            };
+            const targetSection = sectionMap[section];
+            if (targetSection) {
+              onNavigate(targetSection);
+              return `Navigating to ${section}...`;
+            }
+            return `Section '${section}' not found. Type 'ls' to see available sections.`;
+          }
+          return `Navigation not available.`;
         }
         return `Command not found: ${command}. Type 'help' for available commands.`;
     }

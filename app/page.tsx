@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import Dock from './components/Dock';
 import InfiniteMenu from './components/InfiniteMenu';
 import LoadingScreen from './components/LoadingScreen';
@@ -64,6 +64,11 @@ function AnimatedSection({ children, className = '', delay = 0 }: { children: Re
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const floatingConsoleRef = useRef<HTMLDivElement | null>(null);
+  const [showIntroTerminal, setShowIntroTerminal] = useState(true);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [showFloatingConsole, setShowFloatingConsole] = useState(false);
+  const [isFloatingOpen, setIsFloatingOpen] = useState(false);
 
   // Fix container height after animations complete to prevent scrollbar
   useEffect(() => {
@@ -79,6 +84,48 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [isLoading]);
+
+  // Show floating console trigger after scrolling down a bit
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleScroll = () => {
+      const scrolled =
+        window.scrollY || document.documentElement.scrollTop || 0;
+      const shouldShow = scrolled > 400;
+      setShowFloatingConsole(shouldShow);
+
+      // If user scrolls back near the top, auto-close the floating console
+      if (!shouldShow) {
+        setIsFloatingOpen(false);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close floating console when clicking outside of its area
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!isFloatingOpen) return;
+      const container = floatingConsoleRef.current;
+      if (!container) return;
+
+      const target = event.target as Node | null;
+      if (target && !container.contains(target)) {
+        setIsFloatingOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFloatingOpen]);
   const dockItems = [
     {
       icon: <FaHome />,
@@ -132,6 +179,39 @@ export default function Home() {
       {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
       {!isLoading && (
         <>
+          {showIntroTerminal && (
+            <motion.div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-white"
+              initial={{ opacity: 1 }}
+              animate={
+                hasStarted
+                  ? { opacity: 0, scale: 0.7, y: -120, x: 260 }
+                  : { opacity: 1, scale: 1, y: 0, x: 0 }
+              }
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+              onAnimationComplete={() => {
+                if (hasStarted) {
+                  setShowIntroTerminal(false);
+                }
+              }}
+            >
+              <div className="max-w-2xl w-[90%]">
+                <Terminal
+                  username="jumpcloud"
+                  hostname="JumpCloud"
+                  shell="zsh"
+                  initialCommands={[
+                    {
+                      input: '',
+                      output: 'Type "start" and press Enter to access the website.',
+                      timestamp: new Date(),
+                    },
+                  ]}
+                  onStart={() => setHasStarted(true)}
+                />
+              </div>
+            </motion.div>
+          )}
           <div
             ref={containerRef}
             className="relative z-10 bg-transparent"
@@ -202,61 +282,32 @@ export default function Home() {
                   </a>
                 </motion.div>
               </motion.div>
-              <motion.div
-                className="relative"
-                variants={fadeInUp}
-              >
-                <div className="border-4 border-black bg-white p-8 relative">
-                  <div className="grid grid-cols-3 gap-4">
-                    {[...Array(9)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="aspect-square border-4 border-black flex items-center justify-center text-3xl"
-                        style={{
-                          backgroundColor: [
-                            '#ffda03', '#10b981', '#ef4444',
-                            '#ffffff', '#3b82f6', '#f59e0b',
-                            '#8b5cf6', '#ec4899', '#06b6d4'
-                          ][i]
-                        }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 + i * 0.05, duration: 0.4 }}
-                      >
-                        :)
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-                {/* Decorative Star */}
+              <motion.div className="relative" variants={fadeInUp}>
                 <motion.div
-                  className="absolute -top-6 -right-6 w-20 h-20 border-4 border-black bg-pink-400 transform rotate-12"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8, duration: 0.5 }}
+                  className="max-w-2xl w-full"
+                  initial={false}
+                  animate={
+                    hasStarted
+                      ? { opacity: 1, scale: 1, y: 0 }
+                      : { opacity: 0, scale: 0.9, y: 40 }
+                  }
+                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                 >
-                  <div className="w-full h-full flex items-center justify-center text-3xl">★</div>
+                  <Terminal
+                    username="jumpcloud"
+                    hostname="JumpCloud"
+                    shell="zsh"
+                    onNavigate={(section) => {
+                      const element = document.getElementById(section);
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                  />
                 </motion.div>
               </motion.div>
             </motion.div>
           </section>
-
-          {/* Terminal Section */}
-          <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
-            <div className="mb-40">
-              <div className="text-center mb-12">
-                <h2 className="text-5xl font-black mb-4 text-black">TERMINAL</h2>
-                <div className="w-24 h-1 bg-primary mx-auto"></div>
-              </div>
-              <div className="flex justify-center">
-                <Terminal
-                  username="jumpcloud"
-                  hostname="JumpCloud"
-                  shell="zsh"
-                />
-              </div>
-            </div>
-          </AnimatedSection>
 
           {/* About Section */}
           <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-6 py-20">
@@ -548,6 +599,59 @@ export default function Home() {
               ></motion.div>
             </footer>
           </AnimatedSection>
+
+          {/* Floating, collapsible console in bottom-right */}
+          {hasStarted && showFloatingConsole && (
+            <div
+              ref={floatingConsoleRef}
+              className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
+            >
+              <AnimatePresence initial={false}>
+                {isFloatingOpen && (
+                  <motion.div
+                    key="floating-console"
+                    initial={{ opacity: 0, scale: 0.2, y: 40, height: 0 }}
+                    animate={{ opacity: 1, scale: 1, y: 0, height: 'auto' }}
+                    exit={{ opacity: 0, scale: 0.2, y: 40, height: 0 }}
+                    transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                    className="w-[340px] max-w-[85vw] shadow-[0_18px_45px_rgba(0,0,0,0.6)] rounded-xl overflow-hidden border border-black/70 bg-transparent backdrop-blur-md origin-bottom-right"
+                  >
+                    <Terminal
+                      username="jumpcloud"
+                      hostname="Console"
+                      shell="zsh"
+                      initialCommands={[
+                        {
+                          input: '',
+                          output:
+                            'Quick console ready. Use navigation commands or type "theme dark" / "theme light" to change the theme.',
+                          timestamp: new Date(),
+                        },
+                      ]}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <button
+                type="button"
+                onClick={() => setIsFloatingOpen((open) => !open)}
+                aria-label={isFloatingOpen ? 'Hide console' : 'Open console'}
+                className="flex items-center justify-center w-12 h-12 rounded-2xl bg-black/90 text-white shadow-[0_10px_30px_rgba(0,0,0,0.7)] border border-white/25 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.8)] transition-all origin-bottom-right"
+              >
+                <motion.span
+                  animate={
+                    isFloatingOpen
+                      ? { scale: 0.85, opacity: 0.5 }
+                      : { scale: 1, opacity: 1 }
+                  }
+                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                  className="inline-flex w-9 h-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-black border border-white/20 text-[14px] font-mono"
+                >
+                  {isFloatingOpen ? '▁' : '›_'}
+                </motion.span>
+              </button>
+            </div>
+          )}
 
           {/* Dock Component - Fixed Position - Always Visible */}
           <motion.div
