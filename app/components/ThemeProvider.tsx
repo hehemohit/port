@@ -23,11 +23,7 @@ function getInitialTheme(): Theme {
   const stored = window.localStorage.getItem('theme');
   if (stored === 'light' || stored === 'dark') return stored;
 
-  // Fallback to system preference
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
-
+  // Default to light theme (white)
   return 'light';
 }
 

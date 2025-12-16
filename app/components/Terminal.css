@@ -1,8 +1,8 @@
 .terminal-container {
   width: 100%;
   max-width: 800px;
-  /* Glassmorphism background */
-  background: rgba(15, 15, 15, 0.65);
+  /* Glassmorphism background - light frosted glass */
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   border-radius: 8px;
@@ -14,6 +14,41 @@
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
   font-size: 13px;
   line-height: 1.5;
+}
+
+/* Dark glass variant for portfolio hero */
+.terminal-container--dark {
+  background: rgba(15, 15, 15, 0.75);
+}
+
+.terminal-container--dark .terminal-content {
+  color: #ffffff;
+}
+
+.terminal-container--dark .terminal-prompt,
+.terminal-container--dark .terminal-input,
+.terminal-container--dark .terminal-input-field {
+  color: #ffffff;
+}
+
+.terminal-container--dark .terminal-output,
+.terminal-container--dark .terminal-text {
+  color: #d4d4d4;
+}
+
+.terminal-container--dark .terminal-cursor {
+  background: #ffffff;
+}
+
+/* When used inside the macOS window shell, let the terminal fill it */
+.mac-window-terminal .terminal-container {
+  max-width: 100%;
+  height: 100%;
+}
+
+.mac-window-terminal .terminal-content {
+  min-height: 100%;
+  max-height: none;
 }
 
 /* Title Bar */
@@ -76,7 +111,7 @@
 /* Terminal Content */
 .terminal-content {
   background: transparent;
-  color: #ffffff;
+  color: #f9fafb;
   padding: 12px 16px;
   min-height: 300px;
   max-height: 500px;
@@ -112,23 +147,23 @@
 }
 
 .terminal-prompt {
-  color: #ffffff;
+  color: #f9fafb;
   user-select: none;
 }
 
 .terminal-input {
-  color: #ffffff;
+  color: #f9fafb;
 }
 
 .terminal-output {
-  color: #d4d4d4;
+  color: #e5e7eb;
   display: block;
   margin-top: 2px;
   padding-left: 0;
 }
 
 .terminal-text {
-  color: #d4d4d4;
+  color: #e5e7eb;
 }
 
 /* Input Line */
@@ -148,7 +183,7 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #ffffff;
+  color: #f9fafb;
   font-family: inherit;
   font-size: inherit;
   padding: 0;
@@ -161,7 +196,7 @@
   display: inline-block;
   width: 7px;
   height: 16px;
-  background: #ffffff;
+  background: #f9fafb;
   animation: blink 1s infinite;
   margin-left: 2px;
   vertical-align: baseline;
@@ -189,17 +224,38 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .terminal-container {
-    font-size: 12px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+
+  .terminal-titlebar {
+    padding: 6px 8px;
+    font-size: 10px;
   }
 
   .terminal-content {
-    padding: 10px 12px;
-    min-height: 250px;
-    max-height: 400px;
+    padding: 8px 10px;
+    min-height: 200px;
+    max-height: 350px;
+    font-size: 11px;
   }
 
-  .terminal-title {
-    font-size: 10px;
+  .terminal-prompt {
+    font-size: 11px;
+  }
+
+  .terminal-input {
+    font-size: 11px;
+  }
+
+  .terminal-output {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .terminal-cursor {
+    width: 5px;
+    height: 14px;
   }
 }
 

@@ -15,6 +15,9 @@ interface TerminalProps {
   onCommand?: (command: string) => string | Promise<string>;
   onNavigate?: (section: string) => void;
   onStart?: () => void;
+  onClose?: () => void;
+  hideTitlebar?: boolean;
+  variant?: 'light' | 'dark';
   username?: string;
   hostname?: string;
   shell?: string;
@@ -25,8 +28,11 @@ export default function Terminal({
   onCommand,
   onNavigate,
   onStart,
-  username = 'jumpcloud',
-  hostname = 'JumpCloud',
+  onClose,
+  hideTitlebar = false,
+  variant = 'light',
+  username = 'mohit',
+  hostname = 'MohitPortfolioConsole',
   shell = 'zsh'
 }: TerminalProps) {
   const [commands, setCommands] = useState<Command[]>(initialCommands);
@@ -123,6 +129,15 @@ export default function Terminal({
       toggleTheme();
       return `Toggled theme to ${next}.`;
     }
+
+    // Close command to close the terminal
+    if (cmd === 'close' || cmd === 'exit') {
+      if (onClose) {
+        onClose();
+        return 'Closing terminal...';
+      }
+      return 'Close command not available.';
+    }
     
     // Special start command to reveal the page
     if (cmd === 'start') {
@@ -172,6 +187,7 @@ export default function Terminal({
   ls                - List available sections
   pwd               - Print working directory
   start             - Reveal the portfolio page
+  close             - Close the terminal window
   theme             - Show current theme (light/dark)
   theme dark        - Switch to dark mode
   theme light       - Switch to light mode
@@ -279,19 +295,26 @@ Examples:
   const prompt = `${username}@${hostname} ~ % `;
 
   return (
-    <div className="terminal-container" onClick={handleTerminalClick}>
+    <div
+      className={`terminal-container ${
+        variant === 'dark' ? 'terminal-container--dark' : ''
+      }`}
+      onClick={handleTerminalClick}
+    >
       {/* Window Title Bar */}
-      <div className="terminal-titlebar">
-        <div className="terminal-traffic-lights">
-          <div className="traffic-light traffic-light-close"></div>
-          <div className="traffic-light traffic-light-minimize"></div>
-          <div className="traffic-light traffic-light-maximize"></div>
+      {!hideTitlebar && (
+        <div className="terminal-titlebar">
+          <div className="terminal-traffic-lights">
+            <div className="traffic-light traffic-light-close"></div>
+            <div className="traffic-light traffic-light-minimize"></div>
+            <div className="traffic-light traffic-light-maximize"></div>
+          </div>
+          <div className="terminal-title">
+            <span className="terminal-title-icon">🏠</span>
+            {username} — -{shell} — 80x24
+          </div>
         </div>
-        <div className="terminal-title">
-          <span className="terminal-title-icon">🏠</span>
-          {username} — -{shell} — 80x24
-        </div>
-      </div>
+      )}
 
       {/* Terminal Content */}
       <div className="terminal-content" ref={terminalRef}>
