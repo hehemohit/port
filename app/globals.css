@@ -170,6 +170,24 @@ motion.div {
   transform: translate(-2px, -2px);
 }
 
+/* Remove default link styling from buttons */
+.neo-button,
+.neo-button:hover,
+.neo-button:focus,
+.neo-button:active {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.neo-button.bg-black {
+  color: white !important;
+}
+
+.neo-button.bg-black:hover {
+  background-color: black !important;
+  color: white !important;
+}
+
 
 /* Ensure footer extends to bottom */
 footer {

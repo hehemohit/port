@@ -107,8 +107,8 @@ const ScrollSensitiveSection = forwardRef<HTMLDivElement, ScrollSensitiveSection
     // Calculate vertical spacing (margin-top) based on scroll position
     // When section is centered (scrollYProgress = 0.5), margin is normal (48px = mb-12)
     // When scrolling up or down, margin increases (content moves further down)
-    // Reduced values for better mobile UX
-    const marginTop = useTransform(scrollYProgress, [0, 0.5, 1], [80, 40, 80]);
+    // Increased range for more powerful animation effect
+    const marginTop = useTransform(scrollYProgress, [0, 0.5, 1], [180, 30, 180]);
 
     return (
       <AnimatedSection className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 ${className}`}>
@@ -145,7 +145,7 @@ const AboutSectionWithScrollEffect = forwardRef<HTMLDivElement>((props, ref) => 
     offset: ["start end", "end start"],
   });
 
-  const marginTop = useTransform(scrollYProgress, [0, 0.5, 1], [80, 40, 80]);
+  const marginTop = useTransform(scrollYProgress, [0, 0.5, 1], [180, 30, 180]);
 
   return (
     <AnimatedSection className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
@@ -350,7 +350,7 @@ export default function PortfolioPage() {
                   >
                     <a
                       href="#contact"
-                      className="neo-button bg-black text-white p-4 sm:p-5 md:p-6 text-sm sm:text-base md:text-lg hover:bg-gray-800 text-center"
+                      className="neo-button bg-black text-white p-4 sm:p-5 md:p-6 text-sm sm:text-base md:text-lg text-center no-underline hover:no-underline"
                     >
                       GET IN TOUCH
                     </a>
@@ -404,77 +404,7 @@ export default function PortfolioPage() {
                       </div>
                       <div className="text-left md:text-right mt-2 md:mt-0">
                         <p className="text-base sm:text-lg font-semibold text-black">
-                          September 2025 - Present
-                        </p>
-                        <p className="text-sm sm:text-base text-gray-600">Borivali</p>
-                      </div>
-                    </div>
-                    <ul className="space-y-3 text-gray-700">
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
-                          •
-                        </span>
-                        <span>
-                          Collaborated with COO and Tech team to create{" "}
-                          <strong>Agency Management Software (AMS)</strong> for
-                          Social Media Management agencies.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
-                          •
-                        </span>
-                        <span>
-                          Worked on individual modules included as premium
-                          features.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
-                          •
-                        </span>
-                        <span>
-                          Learned WordPress and created functioning client
-                          websites.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
-                          •
-                        </span>
-                        <span>
-                          Independently developed fully functional client
-                          websites, demonstrating adaptability and
-                          problem-solving skills.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
-                          •
-                        </span>
-                        <span>
-                          In Phase 2 of the <strong>Proficio Website</strong>,
-                          documented development progress, challenges, and
-                          solutions for workflow management.
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Previous Role */}
-                  <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-3 sm:mb-4">
-                      <div>
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-1 sm:mb-2 text-black">
-                          Social Media Intern
-                        </h3>
-                        <p className="text-lg sm:text-xl font-bold text-gray-700">
-                          DigitalVigyapan
-                        </p>
-                      </div>
-                      <div className="text-left md:text-right mt-2 md:mt-0">
-                        <p className="text-base sm:text-lg font-semibold text-black">
-                          August 2025 - September 2025
+                          August 2025 - Present
                         </p>
                         <p className="text-sm sm:text-base text-gray-600">Borivali</p>
                       </div>
@@ -485,45 +415,47 @@ export default function PortfolioPage() {
                           •
                         </span>
                         <span>
-                          Collaborated with leading brands (e.g.,{" "}
-                          <strong>
-                            Asian Paints, Avyukta, PureBot, Ebullient, Proficio
-                            Therapy
-                          </strong>
-                          ) to develop content calendars and social media
-                          strategies, achieving an average engagement growth of{" "}
-                          <strong>44.5%</strong> across platforms.
+                          Boosted <strong>Parcos India</strong> sales by <strong>23.6%</strong> and user retention by <strong>39.76%</strong> within <strong>2 months</strong>, by redesigning the UI/UX and re-engineering the platform architecture on <strong>Magento</strong> to achieve <strong>100%</strong> mobile responsiveness, while currently expanding this ecosystem via Native Mobile App development.
                         </span>
                       </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
+                      <li className="flex items-start gap-2 sm:gap-3">
+                        <span className="text-primary font-bold mt-1 flex-shrink-0">
                           •
                         </span>
                         <span>
-                          Brainstormed strategies for advertisements through{" "}
-                          <strong>Google AdWords</strong> partners.
+                          Deployed a custom <strong>Agency Management Software (AMS)</strong> that slashed publishing errors by <strong>70%</strong> and saved <strong>6+ hours</strong> of weekly meeting overhead, by collaborating with executive leadership to automate manual data-entry bottlenecks.
                         </span>
                       </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
+                      <li className="flex items-start gap-2 sm:gap-3">
+                        <span className="text-primary font-bold mt-1 flex-shrink-0">
                           •
                         </span>
                         <span>
-                          Worked with the company founder to conceptualize and
-                          design brand identities and campaigns, earning praise
-                          for professionalism, creative insight, and mature
-                          communication.
+                          Architected and developed a unified <strong>content management system (CMS)</strong> utilizing <strong>Google Cloud Platform (GCP)</strong> services for multi-platform content regulation. Integrated and managed proprietary <strong>APIs</strong> including the <strong>YouTube Data API, Meta Graph API,</strong> and <strong>LinkedIn Marketing/Share API</strong> to enable centralized scheduling and publishing. This system was successfully launched as a premium application feature, directly increasing product value by <strong>20%</strong> and user engagement.
                         </span>
                       </li>
-                      <li className="flex items-start gap-3">
-                        <span className="text-primary font-bold mt-1">
+                      <li className="flex items-start gap-2 sm:gap-3">
+                        <span className="text-primary font-bold mt-1 flex-shrink-0">
                           •
                         </span>
                         <span>
-                          Maintained strong brand relationships, achieving high
-                          client retention rates through consistent
-                          communication, reliability, and results-driven
-                          collaboration.
+                          Independently learned <strong>WordPress</strong> and successfully developed fully functional client websites, demonstrating strong adaptability and hands-on problem-solving skills.
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 sm:gap-3">
+                        <span className="text-primary font-bold mt-1 flex-shrink-0">
+                          •
+                        </span>
+                        <span>
+                          Brainstormed strategies for pushing advertisements through <strong>Google AdWords</strong> partners.
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 sm:gap-3">
+                        <span className="text-primary font-bold mt-1 flex-shrink-0">
+                          •
+                        </span>
+                        <span>
+                          Collaborated directly with leading brands including <strong>Asian Paints, Avyukta, PureBot, Ebullient,</strong> and <strong>Proficio Therapy</strong> to develop content calendars and personalized social media strategies, achieving an average engagement growth of <strong>44.5%</strong> across platforms.
                         </span>
                       </li>
                     </ul>
@@ -533,50 +465,74 @@ export default function PortfolioPage() {
 
             {/* Projects/Portfolio Section */}
             <ScrollSensitiveSection id="projects" title="PROJECTS">
-              <div className="neo-card bg-white relative overflow-hidden">
-                  <div
-                    className="h-[400px] sm:h-[500px] md:h-[600px]"
-                    style={{
-                      width: "100%",
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <InfiniteMenu
-                      items={[
-                        {
-                          image: "https://picsum.photos/300/300?grayscale",
-                          link: "https://google.com/",
-                          title: "Project 1",
-                          description: "This is pretty cool, right?",
-                        },
-                        {
-                          image: "https://picsum.photos/400/400?grayscale",
-                          link: "https://google.com/",
-                          title: "Project 2",
-                          description: "This is pretty cool, right?",
-                        },
-                        {
-                          image: "https://picsum.photos/500/500?grayscale",
-                          link: "https://google.com/",
-                          title: "Project 3",
-                          description: "This is pretty cool, right?",
-                        },
-                        {
-                          image: "https://picsum.photos/600/600?grayscale",
-                          link: "https://google.com/",
-                          title: "Project 4",
-                          description: "This is pretty cool, right?",
-                        },
-                      ] as Array<{
-                        image: string;
-                        link: string;
-                        title: string;
-                        description: string;
-                      }>}
-                    />
-                  </div>
+              {/* InfiniteMenu Component */}
+              <div className="neo-card bg-white relative overflow-hidden mb-8">
+                <div
+                  className="h-[400px] sm:h-[500px] md:h-[600px]"
+                  style={{
+                    width: "100%",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <InfiniteMenu
+                    items={[
+                      {
+                        image: "https://picsum.photos/300/300?grayscale",
+                        link: "https://google.com/",
+                        title: "Project 1",
+                        description: "This is pretty cool, right?",
+                      },
+                      {
+                        image: "https://picsum.photos/400/400?grayscale",
+                        link: "https://google.com/",
+                        title: "Project 2",
+                        description: "This is pretty cool, right?",
+                      },
+                      {
+                        image: "https://picsum.photos/500/500?grayscale",
+                        link: "https://google.com/",
+                        title: "Project 3",
+                        description: "This is pretty cool, right?",
+                      },
+                      {
+                        image: "https://picsum.photos/600/600?grayscale",
+                        link: "https://google.com/",
+                        title: "Project 4",
+                        description: "This is pretty cool, right?",
+                      },
+                    ] as Array<{
+                      image: string;
+                      link: string;
+                      title: string;
+                      description: string;
+                    }>}
+                  />
                 </div>
+              </div>
+
+              {/* Project Cards */}
+              <div className="space-y-6 sm:space-y-8">
+                {/* AI Powered Study-App */}
+                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                    AI Powered Study-App
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    Engineered an <strong>AI-powered productivity platform Study-Focus</strong> that automates <strong>100%</strong> of manual task prioritization and reduces study planning time by <strong>20%</strong> (still in development), by integrating the <strong>Google Gemini API</strong> to parse unstructured text into structured, metadata-rich JSON schemas utilizing <strong>Prompt Engineering</strong>.
+                  </p>
+                </div>
+
+                {/* Game Development | UNITY */}
+                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                    Game Development | UNITY
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    Engineered a scalable <strong>First-Person Shooter (FPS)</strong> framework that reduces weapon implementation time by <strong>50%</strong>, by designing a modular <strong>C#</strong> architecture utilizing Interface-based polymorphism and ScriptableObjects for data-driven gun systems.
+                  </p>
+                </div>
+              </div>
             </ScrollSensitiveSection>
 
             {/* Education Section */}
@@ -594,7 +550,7 @@ export default function PortfolioPage() {
                     </div>
                     <div className="text-left md:text-right mt-4 md:mt-0">
                       <p className="text-base sm:text-lg font-semibold text-black">
-                        August 2023 — May 2027
+                        Aug 2023 — May 2027
                       </p>
                       <p className="text-lg sm:text-xl font-bold text-primary mt-2">
                         CGPA: 7.21/10
@@ -676,30 +632,13 @@ export default function PortfolioPage() {
                     <li className="flex items-start gap-2 sm:gap-3">
                       <span className="text-primary font-bold mt-1 flex-shrink-0">•</span>
                       <span>
-                        Active member of the Students&apos; Council since the
-                        First Year, progressing from SAA&SH President (F.E.) to
-                        Joint Sports Head (S.E.), and currently serving as the
-                        Sports Head (T.E.), demonstrating leadership.
+                        Led the organization of the annual <strong>Sports Fest</strong>, managing a core team and ensuring seamless execution with a yearly <strong>Sports Event</strong> of over <strong>1,000 students</strong>, showcasing strong leadership, coordination, and event management skills.
                       </span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary font-bold mt-1">•</span>
+                    <li className="flex items-start gap-2 sm:gap-3">
+                      <span className="text-primary font-bold mt-1 flex-shrink-0">•</span>
                       <span>
-                        Led the organization of the annual{" "}
-                        <strong>Sports Fest</strong>, managing a core team and
-                        ensuring seamless execution with a yearly footfall of
-                        over <strong>1,000 students</strong>, showcasing strong
-                        leadership, coordination, and event management skills.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary font-bold mt-1">•</span>
-                      <span>
-                        Represented the college in intercollegiate tournaments,
-                        securing <strong>2nd position</strong> and earning a
-                        total of <strong>8 medals</strong> across events like
-                        ICT Volleyball, demonstrating teamwork, discipline, and
-                        competitive excellence.
+                        Represented the college in intercollegiate tournaments and secured <strong>1st position</strong>, earning a total of <strong>8 medals</strong> across events such as <strong>ICT Volleyball</strong>, demonstrating teamwork, discipline, and competitive excellence.
                       </span>
                     </li>
                   </ul>
