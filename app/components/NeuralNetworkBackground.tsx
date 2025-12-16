@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import bg6052105 from "../assets/6052105.jpg";
 
 interface Node {
   x: number;
@@ -23,7 +22,6 @@ export function NeuralNetworkBackground() {
   const nodesRef = useRef<Node[]>([]);
   const connectionsRef = useRef<Connection[]>([]);
   const mousePosRef = useRef({ x: 0, y: 0 });
-  const imageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -31,13 +29,6 @@ export function NeuralNetworkBackground() {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    // Load background image
-    const img = new Image();
-    img.src = bg6052105.src;
-    img.onload = () => {
-      imageRef.current = img;
-    };
 
     // Set canvas size
     const resizeCanvas = () => {
@@ -105,23 +96,14 @@ export function NeuralNetworkBackground() {
       let connections = connectionsRef.current;
       const mouseX = mousePosRef.current.x;
       const mouseY = mousePosRef.current.y;
-      const img = imageRef.current;
 
-      // Draw background image
-      if (img) {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      }
-
-      // Draw white overlay
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+      // Draw white background
+      ctx.fillStyle = "rgba(255, 255, 255, 1)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update connections dynamically
       updateConnections();
       connections = connectionsRef.current;
-
-      // Set composite operation to reveal background through white overlay
-      ctx.globalCompositeOperation = "destination-out";
 
       // Update and draw connections
       connections.forEach((conn) => {
@@ -145,10 +127,10 @@ export function NeuralNetworkBackground() {
         if (distance < 150) {
           const opacity = (1 - distance / 150) * (0.3 + mouseInfluence * 0.4);
 
-          // Use opacity to control how much white overlay is removed
+          // Draw black connections
           ctx.globalAlpha = opacity;
-          ctx.strokeStyle = `rgba(255, 218, 3, 1)`;
-          ctx.lineWidth = 2;
+          ctx.strokeStyle = `rgba(0, 0, 0, 1)`;
+          ctx.lineWidth = 1.5;
           ctx.beginPath();
           ctx.moveTo(fromNode.x, fromNode.y);
           ctx.lineTo(toNode.x, toNode.y);
@@ -195,30 +177,33 @@ export function NeuralNetworkBackground() {
         const nodeRadius = node.radius + mouseInfluence * 4;
         const nodeOpacity = 0.5 + mouseInfluence * 0.5;
 
-        // Glow effect - reveal background
+        // Glow effect
         if (mouseInfluence > 0.2) {
           const glowRadius = nodeRadius * 3;
-          const glowOpacity = mouseInfluence * 0.6;
+          const glowOpacity = mouseInfluence * 0.3;
           
-          ctx.globalAlpha = glowOpacity;
-          ctx.fillStyle = "rgba(255, 218, 3, 1)";
+          const gradient = ctx.createRadialGradient(
+            node.x, node.y, 0,
+            node.x, node.y, glowRadius
+          );
+          gradient.addColorStop(0, `rgba(0, 0, 0, ${glowOpacity})`);
+          gradient.addColorStop(0.5, `rgba(0, 0, 0, ${glowOpacity * 0.5})`);
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+          
+          ctx.fillStyle = gradient;
           ctx.beginPath();
           ctx.arc(node.x, node.y, glowRadius, 0, Math.PI * 2);
           ctx.fill();
-          ctx.globalAlpha = 1;
         }
 
-        // Draw node - reveal background
+        // Draw black node
         ctx.globalAlpha = nodeOpacity;
-        ctx.fillStyle = "rgba(255, 218, 3, 1)";
+        ctx.fillStyle = "rgba(0, 0, 0, 1)";
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeRadius, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
       });
-
-      // Reset composite operation for next frame
-      ctx.globalCompositeOperation = "source-over";
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
