@@ -1,5 +1,5 @@
-import Desktop from './components/Desktop';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  return <Desktop />;
+  redirect('/portfolio');
 }

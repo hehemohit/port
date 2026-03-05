@@ -7,6 +7,8 @@ import InfiniteMenu from "../components/InfiniteMenu";
 import LoadingScreen from "../components/LoadingScreen";
 import Terminal from "../components/Terminal";
 import { NeuralNetworkBackground } from "../components/NeuralNetworkBackground";
+import SplitText from "../components/SplitText";
+import ContactForm from "../components/ContactForm";
 
 import {
   FaHome,
@@ -125,8 +127,27 @@ const ScrollSensitiveSection = forwardRef<HTMLDivElement, ScrollSensitiveSection
           className="mb-20 sm:mb-40"
         >
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 text-black">{title}</h2>
-            <div className="w-16 sm:w-24 h-1 bg-primary mx-auto"></div>
+            <SplitText
+              text={title}
+              className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 text-black block"
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+              tag="h2"
+            />
+            <motion.div 
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+              className="w-16 sm:w-24 h-1 bg-primary mx-auto mt-3 origin-center"
+            />
           </div>
           <motion.div style={{ marginTop }}>{children}</motion.div>
         </div>
@@ -161,10 +182,29 @@ const AboutSectionWithScrollEffect = forwardRef<HTMLDivElement>((props, ref) => 
         id="about"
         className="mb-20 sm:mb-40"
       >
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 text-black">ABOUT ME</h2>
-          <div className="w-16 sm:w-24 h-1 bg-primary mx-auto"></div>
-        </div>
+          <div className="text-center mb-8 sm:mb-12">
+            <SplitText
+              text="ABOUT ME"
+              className="text-3xl sm:text-4xl md:text-5xl font-black mb-3 sm:mb-4 text-black block"
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+              tag="h2"
+            />
+            <motion.div 
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+              className="w-16 sm:w-24 h-1 bg-primary mx-auto mt-3 origin-center"
+            />
+          </div>
         <motion.div style={{ marginTop }}>
           <div className="relative neo-card overflow-hidden">
             <div className="grid md:grid-cols-2 gap-0">
@@ -415,7 +455,7 @@ export default function PortfolioPage() {
                           •
                         </span>
                         <span>
-                          Boosted <strong>Parcos India</strong> sales by <strong>23.6%</strong> and user retention by <strong>39.76%</strong> within <strong>2 months</strong>, by redesigning the UI/UX and re-engineering the platform architecture on <strong>Magento</strong> to achieve <strong>100%</strong> mobile responsiveness, while currently expanding this ecosystem via Native Mobile App development.
+                          Refactored the Magento codebase to implement responsive frontend rendering for <strong>Parcos</strong>, optimizing mobile performance which drove a <strong>23.6% increase in sales conversions</strong>. Currently scaling the product ecosystem by architecting a complementary Native Mobile App.
                         </span>
                       </li>
                       <li className="flex items-start gap-2 sm:gap-3">
@@ -423,7 +463,7 @@ export default function PortfolioPage() {
                           •
                         </span>
                         <span>
-                          Deployed a custom <strong>Agency Management Software (AMS)</strong> that slashed publishing errors by <strong>70%</strong> and saved <strong>6+ hours</strong> of weekly meeting overhead, by collaborating with executive leadership to automate manual data-entry bottlenecks.
+                          Engineered a custom internal tool using <strong>React and Node.js</strong> to automate content publishing pipelines. By enforcing schema validation in MongoDB, the system achieved a <strong>70% reduction in fault rates</strong> and optimized team throughput by 15%.
                         </span>
                       </li>
                       <li className="flex items-start gap-2 sm:gap-3">
@@ -432,30 +472,6 @@ export default function PortfolioPage() {
                         </span>
                         <span>
                           Architected and developed a unified <strong>content management system (CMS)</strong> utilizing <strong>Google Cloud Platform (GCP)</strong> services for multi-platform content regulation. Integrated and managed proprietary <strong>APIs</strong> including the <strong>YouTube Data API, Meta Graph API,</strong> and <strong>LinkedIn Marketing/Share API</strong> to enable centralized scheduling and publishing. This system was successfully launched as a premium application feature, directly increasing product value by <strong>20%</strong> and user engagement.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2 sm:gap-3">
-                        <span className="text-primary font-bold mt-1 flex-shrink-0">
-                          •
-                        </span>
-                        <span>
-                          Independently learned <strong>WordPress</strong> and successfully developed fully functional client websites, demonstrating strong adaptability and hands-on problem-solving skills.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2 sm:gap-3">
-                        <span className="text-primary font-bold mt-1 flex-shrink-0">
-                          •
-                        </span>
-                        <span>
-                          Brainstormed strategies for pushing advertisements through <strong>Google AdWords</strong> partners.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2 sm:gap-3">
-                        <span className="text-primary font-bold mt-1 flex-shrink-0">
-                          •
-                        </span>
-                        <span>
-                          Collaborated directly with leading brands including <strong>Asian Paints, Avyukta, PureBot, Ebullient,</strong> and <strong>Proficio Therapy</strong> to develop content calendars and personalized social media strategies, achieving an average engagement growth of <strong>44.5%</strong> across platforms.
                         </span>
                       </li>
                     </ul>
@@ -479,27 +495,27 @@ export default function PortfolioPage() {
                     items={[
                       {
                         image: "https://picsum.photos/300/300?grayscale",
-                        link: "https://google.com/",
-                        title: "Project 1",
-                        description: "This is pretty cool, right?",
+                        link: "https://study-app-jet.vercel.app/",
+                        title: "StudyApp",
+                        description: "AI-powered productivity platform automating manual task prioritization.",
                       },
                       {
                         image: "https://picsum.photos/400/400?grayscale",
-                        link: "https://google.com/",
-                        title: "Project 2",
-                        description: "This is pretty cool, right?",
+                        link: "https://edu-able.vercel.app/",
+                        title: "EduAble",
+                        description: "1st Place winner: AI-driven, accessibility-first educational platform.",
                       },
                       {
                         image: "https://picsum.photos/500/500?grayscale",
-                        link: "https://google.com/",
-                        title: "Project 3",
-                        description: "This is pretty cool, right?",
+                        link: "https://study-app-jet.vercel.app/",
+                        title: "StudyApp",
+                        description: "AI-powered productivity platform automating manual task prioritization.",
                       },
                       {
                         image: "https://picsum.photos/600/600?grayscale",
-                        link: "https://google.com/",
-                        title: "Project 4",
-                        description: "This is pretty cool, right?",
+                        link: "https://edu-able.vercel.app/",
+                        title: "EduAble",
+                        description: "1st Place winner: AI-driven, accessibility-first educational platform.",
                       },
                     ] as Array<{
                       image: string;
@@ -532,6 +548,16 @@ export default function PortfolioPage() {
                     Engineered a scalable <strong>First-Person Shooter (FPS)</strong> framework that reduces weapon implementation time by <strong>50%</strong>, by designing a modular <strong>C#</strong> architecture utilizing Interface-based polymorphism and ScriptableObjects for data-driven gun systems.
                   </p>
                 </div>
+
+                {/* EduAble */}
+                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                    EduAble
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                    <strong>1st Place</strong> at the CODE AUTOMATA 2.1 hackathon, hosted by CSMIT. Our project, <strong>EduAble</strong>, is an AI-driven, accessibility-first platform designed to empower students with visual, hearing, speech, and cognitive disabilities. By leveraging adaptive learning and assistive technologies, we aim to ensure that every student—regardless of their physical or cognitive challenges—has an equal opportunity to thrive.
+                  </p>
+                </div>
               </div>
             </ScrollSensitiveSection>
 
@@ -553,7 +579,7 @@ export default function PortfolioPage() {
                         Aug 2023 — May 2027
                       </p>
                       <p className="text-lg sm:text-xl font-bold text-primary mt-2">
-                        CGPA: 7.21/10
+                        Currently: 7.61/10 CGPA
                       </p>
                     </div>
                   </div>
@@ -569,17 +595,17 @@ export default function PortfolioPage() {
                   </h3>
                   <div className="flex flex-wrap gap-3 sm:gap-4 items-center">
                     {[
-                      { name: "SQL", icon: <FaDatabase /> },
-                      { name: "Python", icon: <FaPython /> },
-                      { name: "Tableau", icon: <FaChartBar /> },
-                      { name: "Cognos Analytics", icon: <FaChartBar /> },
-                      { name: "Power BI", icon: <FaChartBar /> },
-                      { name: "Excel", icon: <FaFileExcel /> },
-                      { name: "WordPress", icon: <FaWordpress /> },
-                      { name: "Canva", icon: <FaPalette /> },
-                      { name: "Davinci Video Editing", icon: <FaVideo /> },
-                      { name: "Adobe Photoshop", icon: <FaImage /> },
-                      { name: "Adobe Premiere Pro", icon: <FaFilm /> },
+                      { name: "JavaScript", icon: <FaCode /> },
+                      { name: "React/MERN", icon: <FaCode /> },
+                      { name: "C#", icon: <FaCode /> },
+                      { name: "HTML5 & CSS3", icon: <FaCode /> },
+                      { name: "REST APIs", icon: <FaDatabase /> },
+                      { name: "Magento", icon: <FaDatabase /> },
+                      { name: "Unity", icon: <FaCode /> },
+                      { name: "Git", icon: <FaCode /> },
+                      { name: "GCP & GCS", icon: <FaDatabase /> },
+                      { name: "Linux", icon: <FaCode /> },
+                      { name: "Postman", icon: <FaCode /> },
                     ].map((skill, i) => (
                       <div key={i} className="flex items-center gap-1.5 sm:gap-2">
                         <div className="dock-icon-small">{skill.icon}</div>
@@ -655,18 +681,26 @@ export default function PortfolioPage() {
                 marginTop: "auto",
               }}
             >
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">LET&apos;S CONNECT</h2>
+                <SplitText
+                  text="LET'S CONNECT"
+                  className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6 block"
+                  delay={50}
+                  duration={1.25}
+                  ease="power3.out"
+                  splitType="chars"
+                  from={{ opacity: 0, y: 40 }}
+                  to={{ opacity: 1, y: 0 }}
+                  threshold={0.1}
+                  rootMargin="-100px"
+                  textAlign="center"
+                  tag="h2"
+                />
                 <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-300 max-w-2xl mx-auto px-4">
                   Ready to collaborate on your next project? Get in touch and
                   let&apos;s create something amazing together.
                 </p>
-                <div className="flex flex-col md:flex-row gap-3 sm:gap-4 justify-center items-center mb-6 sm:mb-8">
-                  <a
-                    href="mailto:mohit.jangid2805@gmail.com"
-                    className="border-4 border-white bg-primary text-black px-6 sm:px-8 md:px-10 py-3 sm:py-4 font-bold text-sm sm:text-base md:text-lg hover:bg-yellow-400 transition-colors"
-                  >
-                    SEND EMAIL
-                  </a>
+                <div className="w-full relative z-20 mb-12 sm:mb-16">
+                  <ContactForm />
                 </div>
                 <div className="flex flex-col md:flex-row gap-4 sm:gap-6 justify-center items-center text-gray-300 mb-4 sm:mb-6 px-4">
                   <a
