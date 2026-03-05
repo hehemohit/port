@@ -108,10 +108,46 @@
   transition: 0.1s ease;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1024px) {
+  .face-title {
+    font-size: 2rem;
+    left: 10%;
+    transform: translate(0, -90%);
+  }
 
-  .face-title,
+  .face-title.active {
+    transform: translate(0, -90%);
+  }
+
   .face-description {
-    display: none;
+    font-size: 1rem;
+    max-width: 20ch;
+    right: 10%;
+    bottom: 20%;
+    top: auto;
+    transform: translate(0, 0);
+  }
+
+  .face-description.active {
+    transform: translate(0, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .face-title {
+    font-size: 1.5rem;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    top: 15%;
+    transform: translate(0, 0);
+  }
+
+  .face-title.active {
+    transform: translate(0, 0);
+  }
+
+  .face-description {
+    display: none; /* Hide longer descriptions on tiny mobile screens to avoid overlap */
   }
 }

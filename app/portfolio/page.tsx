@@ -9,6 +9,7 @@ import Terminal from "../components/Terminal";
 import { NeuralNetworkBackground } from "../components/NeuralNetworkBackground";
 import SplitText from "../components/SplitText";
 import ContactForm from "../components/ContactForm";
+import { AnimatePresence } from "framer-motion";
 
 import {
   FaHome,
@@ -209,10 +210,10 @@ const AboutSectionWithScrollEffect = forwardRef<HTMLDivElement>((props, ref) => 
           <div className="relative neo-card overflow-hidden">
             <div className="grid md:grid-cols-2 gap-0">
               <div className="border-r-0 md:border-r-4 border-b-4 md:border-b-0 border-black bg-primary p-6 sm:p-8 md:p-12 relative">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black text-center md:text-left">
                   PASSIONATE DEVELOPER
                 </h3>
-                <p className="text-base sm:text-lg leading-relaxed text-black">
+                <p className="text-base sm:text-lg leading-relaxed text-black text-center md:text-left">
                   I&apos;m a Computer Engineering student with a passion for
                   creating innovative digital solutions. Currently working as a
                   Web Developer Intern, I specialize in building functional
@@ -220,9 +221,9 @@ const AboutSectionWithScrollEffect = forwardRef<HTMLDivElement>((props, ref) => 
                 </p>
                 <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 w-12 h-12 sm:w-16 sm:h-16 border-4 border-black bg-orange-400 transform rotate-45"></div>
               </div>
-              <div className="bg-secondary-purple p-6 sm:p-8 md:p-12 text-white relative">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4">CREATIVE STRATEGIST</h3>
-                <p className="text-base sm:text-lg leading-relaxed">
+              <div className="bg-secondary-purple p-6 sm:p-8 md:p-12 text-white relative flex flex-col items-center md:items-start">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-center md:text-left">CREATIVE STRATEGIST</h3>
+                <p className="text-base sm:text-lg leading-relaxed text-center md:text-left">
                   With experience in social media management and brand strategy,
                   I&apos;ve helped brands like{" "}
                   <strong>
@@ -246,6 +247,7 @@ AboutSectionWithScrollEffect.displayName = "AboutSectionWithScrollEffect";
 
 export default function PortfolioPage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const aboutSectionRef = useRef<HTMLDivElement>(null);
 
@@ -306,8 +308,7 @@ export default function PortfolioPage() {
       icon: <FaEnvelope />,
       label: "Contact",
       onClick: () => {
-        const contactSection = document.getElementById("contact");
-        contactSection?.scrollIntoView({ behavior: "smooth" });
+        setIsContactModalOpen(true);
       },
     },
   ];
@@ -343,19 +344,19 @@ export default function PortfolioPage() {
               >
                 <motion.div variants={fadeInUp}>
                   <motion.div
-                    className="text-xs sm:text-sm text-gray-600 uppercase tracking-wider mb-3 sm:mb-4"
+                    className="text-xs sm:text-sm text-gray-600 uppercase tracking-wider mb-3 sm:mb-4 text-center md:text-left"
                     variants={fadeInUp}
                   >
                     Web Developer & Digital Strategist
                   </motion.div>
                   <motion.h1
-                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-4 sm:mb-6 text-black"
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight mb-4 sm:mb-6 text-black text-center md:text-left"
                     variants={fadeInUp}
                   >
                     MOHIT JANGID
                   </motion.h1>
                   <motion.p
-                    className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-700 leading-relaxed"
+                    className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-700 leading-relaxed text-center md:text-left"
                     variants={fadeInUp}
                   >
                     Web Developer Intern at DigitalVigyapan | Building
@@ -363,7 +364,7 @@ export default function PortfolioPage() {
                     through creative strategies and technical expertise.
                   </motion.p>
                   <motion.div
-                    className="flex flex-col gap-3 mb-6"
+                    className="flex flex-col gap-3 mb-6 items-center md:items-start"
                     variants={fadeInUp}
                   >
                     <div className="flex items-center gap-3 text-gray-700">
@@ -388,12 +389,12 @@ export default function PortfolioPage() {
                     className="grid md:grid-cols-2 gap-3 sm:gap-4 mt-6 sm:mt-8"
                     variants={fadeInUp}
                   >
-                    <a
-                      href="#contact"
+                    <button
+                      onClick={() => setIsContactModalOpen(true)}
                       className="neo-button bg-black text-white p-4 sm:p-5 md:p-6 text-sm sm:text-base md:text-lg text-center no-underline hover:no-underline"
                     >
                       GET IN TOUCH
-                    </a>
+                    </button>
                     <a
                       href="#experience"
                       className="neo-button bg-white text-black p-4 sm:p-5 md:p-6 text-sm sm:text-base md:text-lg hover:bg-gray-100 text-center"
@@ -433,7 +434,7 @@ export default function PortfolioPage() {
               <div className="space-y-6 sm:space-y-8">
                   {/* Current Role */}
                   <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-3 sm:mb-4">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-3 sm:mb-4 text-center md:text-left">
                       <div>
                         <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-1 sm:mb-2 text-black">
                           Web Developer Intern
@@ -442,7 +443,7 @@ export default function PortfolioPage() {
                           DigitalVigyapan
                         </p>
                       </div>
-                      <div className="text-left md:text-right mt-2 md:mt-0">
+                      <div className="text-center md:text-right mt-2 md:mt-0">
                         <p className="text-base sm:text-lg font-semibold text-black">
                           August 2025 - Present
                         </p>
@@ -530,31 +531,31 @@ export default function PortfolioPage() {
               {/* Project Cards */}
               <div className="space-y-6 sm:space-y-8">
                 {/* AI Powered Study-App */}
-                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative flex flex-col items-center md:items-start">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black text-center md:text-left">
                     AI Powered Study-App
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-center md:text-left">
                     Engineered an <strong>AI-powered productivity platform Study-Focus</strong> that automates <strong>100%</strong> of manual task prioritization and reduces study planning time by <strong>20%</strong> (still in development), by integrating the <strong>Google Gemini API</strong> to parse unstructured text into structured, metadata-rich JSON schemas utilizing <strong>Prompt Engineering</strong>.
                   </p>
                 </div>
 
                 {/* Game Development | UNITY */}
-                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative flex flex-col items-center md:items-start">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black text-center md:text-left">
                     Game Development | UNITY
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-center md:text-left">
                     Engineered a scalable <strong>First-Person Shooter (FPS)</strong> framework that reduces weapon implementation time by <strong>50%</strong>, by designing a modular <strong>C#</strong> architecture utilizing Interface-based polymorphism and ScriptableObjects for data-driven gun systems.
                   </p>
                 </div>
 
                 {/* EduAble */}
-                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+                <div className="neo-card bg-white p-4 sm:p-6 md:p-8 relative flex flex-col items-center md:items-start">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black text-center md:text-left">
                     EduAble
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed text-center md:text-left">
                     <strong>1st Place</strong> at the CODE AUTOMATA 2.1 hackathon, hosted by CSMIT. Our project, <strong>EduAble</strong>, is an AI-driven, accessibility-first platform designed to empower students with visual, hearing, speech, and cognitive disabilities. By leveraging adaptive learning and assistive technologies, we aim to ensure that every student—regardless of their physical or cognitive challenges—has an equal opportunity to thrive.
                   </p>
                 </div>
@@ -564,7 +565,7 @@ export default function PortfolioPage() {
             {/* Education Section */}
             <ScrollSensitiveSection id="education" title="EDUCATION">
               <div className="neo-card bg-white p-4 sm:p-6 md:p-12 relative">
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4 sm:mb-6">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4 sm:mb-6 text-center md:text-left">
                     <div>
                       <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-1 sm:mb-2 text-black">
                         B.E. in Computer Engineering
@@ -574,7 +575,7 @@ export default function PortfolioPage() {
                       </p>
                       <p className="text-base sm:text-lg text-gray-600 mt-1">Mumbai</p>
                     </div>
-                    <div className="text-left md:text-right mt-4 md:mt-0">
+                    <div className="text-center md:text-right mt-4 md:mt-0">
                       <p className="text-base sm:text-lg font-semibold text-black">
                         Aug 2023 — May 2027
                       </p>
@@ -589,11 +590,11 @@ export default function PortfolioPage() {
             {/* Skills Section */}
             <ScrollSensitiveSection id="skills" title="SKILLS">
               {/* Technical Skills */}
-                <div className="border-4 border-black bg-secondary-green p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
-                  <h3 className="text-xl sm:text-2xl font-black mb-3 sm:mb-4 text-black">
+                <div className="border-4 border-black bg-secondary-green p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 flex flex-col items-center md:items-start">
+                  <h3 className="text-xl sm:text-2xl font-black mb-3 sm:mb-4 text-black text-center md:text-left">
                     Technical Skills
                   </h3>
-                  <div className="flex flex-wrap gap-3 sm:gap-4 items-center">
+                  <div className="flex flex-wrap gap-3 sm:gap-4 items-center justify-center md:justify-start">
                     {[
                       { name: "JavaScript", icon: <FaCode /> },
                       { name: "React/MERN", icon: <FaCode /> },
@@ -650,8 +651,8 @@ export default function PortfolioPage() {
 
             {/* Positions of Responsibility */}
             <ScrollSensitiveSection id="leadership-section" title="LEADERSHIP">
-              <div className="neo-card bg-white p-4 sm:p-6 md:p-12 relative">
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black">
+              <div className="neo-card bg-white p-4 sm:p-6 md:p-12 relative flex flex-col items-center md:items-start">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 sm:mb-4 text-black text-center md:text-left">
                     Sports Head | Students&apos; Council
                   </h3>
                   <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base text-gray-700">
@@ -699,8 +700,13 @@ export default function PortfolioPage() {
                   Ready to collaborate on your next project? Get in touch and
                   let&apos;s create something amazing together.
                 </p>
-                <div className="w-full relative z-20 mb-12 sm:mb-16">
-                  <ContactForm />
+                <div className="flex flex-col md:flex-row gap-3 sm:gap-4 justify-center items-center mb-6 sm:mb-8 mt-6">
+                  <button
+                    onClick={() => setIsContactModalOpen(true)}
+                    className="border-4 border-white bg-primary text-black px-6 sm:px-8 md:px-10 py-3 sm:py-4 font-bold text-sm sm:text-base md:text-lg hover:bg-yellow-400 transition-colors cursor-pointer block z-30"
+                  >
+                    SEND EMAIL
+                  </button>
                 </div>
                 <div className="flex flex-col md:flex-row gap-4 sm:gap-6 justify-center items-center text-gray-300 mb-4 sm:mb-6 px-4">
                   <a
@@ -720,6 +726,39 @@ export default function PortfolioPage() {
                 <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 w-8 h-8 sm:w-12 sm:h-12 border-4 border-white bg-teal-400 transform -rotate-12"></div>
             </footer>
           </div>
+
+          {/* Contact Modal Overlay */}
+          <AnimatePresence>
+            {isContactModalOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md bg-black/60"
+              >
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  className="bg-zinc-900 border-4 border-white p-6 sm:p-8 md:p-10 w-full max-w-2xl relative shadow-2xl"
+                >
+                  <button
+                    onClick={() => setIsContactModalOpen(false)}
+                    className="absolute top-4 right-4 w-8 h-8 sm:w-10 sm:h-10 border-2 border-white bg-red-500 text-white flex items-center justify-center font-bold hover:bg-black transition-colors z-20"
+                    aria-label="Close modal"
+                  >
+                    ✕
+                  </button>
+                  <div className="text-center mb-6">
+                     <h3 className="text-2xl sm:text-3xl font-black text-white mb-2">LET&apos;S CONNECT</h3>
+                     <p className="text-sm sm:text-base text-gray-400">Fill out the form below and I&apos;ll get back to you shortly.</p>
+                  </div>
+                  <ContactForm />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Dock Component - Fixed Position - Always Visible */}
           <Dock items={dockItems} />
